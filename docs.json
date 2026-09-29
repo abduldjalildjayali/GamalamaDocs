@@ -39,14 +39,6 @@
         "tab": "Mata Kuliah",
         "groups": [
           {
-            "group": "Matematika & Sains",
-            "pages": [
-              "mata-kuliah/kalkulus",
-              "mata-kuliah/statistika",
-              "mata-kuliah/fisika-dasar"
-            ]
-          },
-          {
             "group": "Ilmu Komputer",
             "pages": [
               "mata-kuliah/algoritma-pemrograman",
