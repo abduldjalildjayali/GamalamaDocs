@@ -33,7 +33,8 @@
               "daftar-mata-kuliah"
             ]
           }
-        ]
+        ],
+        "icon": "airplay"
       },
       {
         "tab": "Mata Kuliah",
