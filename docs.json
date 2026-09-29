@@ -1,5 +1,5 @@
 {
-  "theme": "mint",
+  "theme": "almond",
   "name": "Portal Materi Kuliah",
   "colors": {
     "primary": "#10b981",
@@ -16,9 +16,6 @@
   },
   "footer": {
     "socials": {}
-  },
-  "fonts": {
-    "family": "Inter"
   },
   "icons": {
     "library": "lucide"
