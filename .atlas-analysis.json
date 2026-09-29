@@ -1,13 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "projectType": "general",
+  "projectName": "Portal Materi Kuliah",
+  "projectDescription": "Portal dokumentasi terpusat untuk berbagai materi ajar mata kuliah, dirancang untuk membantu mahasiswa mengakses dan memahami konten pembelajaran secara terstruktur.",
   "theme": "almond",
-  "name": "Portal Materi Kuliah",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "favicon": "/favicon.svg",
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
   "navigation": {
     "tabs": [
       {
@@ -82,14 +80,13 @@
       }
     ]
   },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Mulai Belajar",
-      "href": "/introduction"
-    }
-  },
-  "footer": {
-    "socials": {}
-  }
+  "keyFeatures": [
+    "Materi ajar terstruktur per mata kuliah",
+    "Panduan belajar dan tips akademik",
+    "Glosarium istilah per bidang studi",
+    "Daftar referensi dan sumber belajar tambahan",
+    "FAQ dan dukungan mahasiswa",
+    "Navigasi mudah antar topik dan mata kuliah"
+  ],
+  "publicApiSurface": []
 }

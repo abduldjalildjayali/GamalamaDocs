@@ -1,0 +1,232 @@
+---
+title: "Statistika: Analisis Data dan Probabilitas untuk Mahasiswa"
+sidebarTitle: "Statistika"
+description: "Materi statistika mencakup statistik deskriptif, probabilitas, distribusi data, pengujian hipotesis, dan interpretasi hasil analisis data."
+---
+
+Statistika adalah ilmu yang mempelajari cara mengumpulkan, mengorganisasi, menganalisis, menginterpretasikan, dan menyajikan data secara sistematis. Di era digital saat ini, kemampuan statistika menjadi salah satu kompetensi paling dicari — mulai dari penelitian ilmiah, pengambilan keputusan bisnis, hingga pengembangan kecerdasan buatan. Dengan memahami statistika, mahasiswa dapat membaca data secara kritis dan menarik kesimpulan yang valid dari informasi yang tersedia.
+
+## Statistik Deskriptif
+
+Statistik deskriptif digunakan untuk **meringkas dan menggambarkan** karakteristik utama dari sekumpulan data. Alih-alih mengambil kesimpulan tentang populasi, statistik deskriptif fokus pada penyajian data yang sudah ada secara informatif dan mudah dipahami.
+
+### Ukuran Pemusatan Data
+
+<CardGroup cols={3}>
+  <Card title="Mean (Rata-rata)" icon="equals">
+    Jumlah seluruh nilai data dibagi banyaknya data.
+  </Card>
+  <Card title="Median" icon="list-ol">
+    Nilai tengah data setelah diurutkan dari kecil ke besar.
+  </Card>
+  <Card title="Modus" icon="arrow-up">
+    Nilai yang paling sering muncul dalam kumpulan data.
+  </Card>
+</CardGroup>
+
+**Rumus Mean:**
+
+```math
+\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{x_1 + x_2 + \cdots + x_n}{n}
+```
+
+**Rumus Median** (untuk data dengan jumlah n):
+
+```math
+\text{Median} =
+\begin{cases}
+x_{\frac{n+1}{2}} & \text{jika } n \text{ ganjil} \\[6pt]
+\dfrac{x_{\frac{n}{2}} + x_{\frac{n}{2}+1}}{2} & \text{jika } n \text{ genap}
+\end{cases}
+```
+
+### Ukuran Penyebaran Data
+
+Ukuran penyebaran menunjukkan seberapa jauh data tersebar dari pusatnya.
+
+**Varians (Variance)** — mengukur rata-rata kuadrat simpangan dari mean:
+
+```math
+s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}
+```
+
+**Simpangan Baku (Standard Deviation)** — akar kuadrat dari varians, memiliki satuan yang sama dengan data:
+
+```math
+s = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}}
+```
+
+**Rentang (Range)** — selisih antara nilai maksimum dan minimum:
+
+```math
+R = x_{\max} - x_{\min}
+```
+
+<Accordion title="Contoh Perhitungan Statistik Deskriptif">
+  Diberikan data nilai ujian: **70, 75, 80, 85, 90**
+
+  **Mean:**
+  ```math
+  \bar{x} = \frac{70 + 75 + 80 + 85 + 90}{5} = \frac{400}{5} = 80
+  ```
+
+  **Varians:**
+  ```math
+  s^2 = \frac{(70-80)^2 + (75-80)^2 + (80-80)^2 + (85-80)^2 + (90-80)^2}{5-1} = \frac{100+25+0+25+100}{4} = 62{,}5
+  ```
+
+  **Simpangan Baku:**
+  ```math
+  s = \sqrt{62{,}5} \approx 7{,}91
+  ```
+</Accordion>
+
+---
+
+## Probabilitas
+
+Probabilitas (peluang) adalah ukuran seberapa besar kemungkinan suatu kejadian akan terjadi. Nilai probabilitas berkisar antara 0 (mustahil terjadi) hingga 1 (pasti terjadi). Probabilitas menjadi landasan teori bagi seluruh inferensi statistik.
+
+### Konsep Dasar Probabilitas
+
+**Definisi Probabilitas Klasik:**
+
+```math
+P(A) = \frac{\text{banyaknya kejadian yang diinginkan}}{\text{banyaknya kejadian yang mungkin}} = \frac{n(A)}{n(S)}
+```
+
+**Aturan Penjumlahan** (untuk dua kejadian A dan B):
+
+```math
+P(A \cup B) = P(A) + P(B) - P(A \cap B)
+```
+
+Jika A dan B saling lepas (mutually exclusive), maka $P(A \cap B) = 0$, sehingga:
+
+```math
+P(A \cup B) = P(A) + P(B)
+```
+
+**Aturan Perkalian** (untuk kejadian independen):
+
+```math
+P(A \cap B) = P(A) \cdot P(B)
+```
+
+**Probabilitas Bersyarat** — peluang A terjadi, diketahui B sudah terjadi:
+
+```math
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}, \quad P(B) \neq 0
+```
+
+**Teorema Bayes:**
+
+```math
+P(A \mid B) = \frac{P(B \mid A) \cdot P(A)}{P(B)}
+```
+
+---
+
+## Distribusi Data
+
+Distribusi data menggambarkan bagaimana nilai-nilai dalam suatu kumpulan data tersebar. Mengenal jenis-jenis distribusi sangat penting untuk memilih metode analisis statistik yang tepat.
+
+<CardGroup cols={2}>
+  <Card title="Distribusi Normal" icon="chart-area">
+    Distribusi simetris berbentuk lonceng. Banyak fenomena alam mengikuti distribusi ini.
+  </Card>
+  <Card title="Distribusi Binomial" icon="dice">
+    Distribusi untuk percobaan yang hanya memiliki dua kemungkinan hasil (sukses/gagal).
+  </Card>
+  <Card title="Distribusi Poisson" icon="clock">
+    Menggambarkan banyaknya kejadian yang terjadi dalam interval waktu atau ruang tertentu.
+  </Card>
+  <Card title="Distribusi t-Student" icon="magnifying-glass-chart">
+    Digunakan saat ukuran sampel kecil dan simpangan baku populasi tidak diketahui.
+  </Card>
+</CardGroup>
+
+### Distribusi Normal
+
+Distribusi normal adalah distribusi paling penting dalam statistika. Fungsi kepadatan probabilitasnya adalah:
+
+```math
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} \, e^{-\dfrac{(x - \mu)^2}{2\sigma^2}}
+```
+
+di mana $\mu$ adalah mean populasi dan $\sigma$ adalah simpangan baku populasi.
+
+**Skor Z (Standardisasi)** — mengubah nilai ke dalam skala distribusi normal standar $N(0, 1)$:
+
+```math
+Z = \frac{x - \mu}{\sigma}
+```
+
+**Aturan Empiris (68-95-99.7):**
+
+```math
+P(\mu - \sigma < X < \mu + \sigma) \approx 68\%
+```
+
+```math
+P(\mu - 2\sigma < X < \mu + 2\sigma) \approx 95\%
+```
+
+```math
+P(\mu - 3\sigma < X < \mu + 3\sigma) \approx 99{,}7\%
+```
+
+---
+
+## Pengujian Hipotesis
+
+Pengujian hipotesis adalah prosedur statistik yang digunakan untuk membuat keputusan berdasarkan data sampel mengenai suatu klaim tentang populasi. Ini merupakan inti dari penelitian kuantitatif di hampir semua bidang ilmu.
+
+<Steps>
+  <Step title="Rumuskan Hipotesis">
+    Tentukan **hipotesis nol (H₀)** yang menyatakan tidak ada perbedaan atau efek, dan **hipotesis alternatif (H₁)** yang menyatakan adanya perbedaan atau efek yang ingin dibuktikan.
+  </Step>
+  <Step title="Tentukan Taraf Signifikansi">
+    Pilih nilai **α (alpha)** sebagai batas toleransi kesalahan. Nilai umum yang digunakan adalah α = 0,05 (5%) atau α = 0,01 (1%).
+  </Step>
+  <Step title="Pilih Uji Statistik">
+    Tentukan uji yang sesuai berdasarkan jenis data dan distribusinya, misalnya uji-t, uji-Z, uji Chi-Kuadrat, atau uji ANOVA.
+  </Step>
+  <Step title="Hitung Statistik Uji">
+    Hitung nilai statistik uji dari data sampel. Contoh untuk **uji-t satu sampel**:
+
+    ```math
+    t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}
+    ```
+
+    di mana $\bar{x}$ adalah mean sampel, $\mu_0$ adalah nilai hipotesis, $s$ adalah simpangan baku sampel, dan $n$ adalah ukuran sampel.
+  </Step>
+  <Step title="Ambil Keputusan">
+    Bandingkan nilai **p-value** dengan α, atau nilai statistik uji dengan nilai kritis. Jika p-value < α, maka **tolak H₀**. Jika p-value ≥ α, maka **gagal menolak H₀**.
+  </Step>
+</Steps>
+
+### Jenis Kesalahan dalam Pengujian Hipotesis
+
+| Keputusan | H₀ Benar | H₀ Salah |
+|---|---|---|
+| **Tolak H₀** | Kesalahan Tipe I (α) | Keputusan Benar (Power) |
+| **Gagal Tolak H₀** | Keputusan Benar | Kesalahan Tipe II (β) |
+
+---
+
+<Tip>
+  **Kunci Sukses Belajar Statistika**
+
+  Jangan hanya menghafal rumus — pahami **kapan dan mengapa** suatu metode digunakan. Biasakan diri untuk menganalisis data nyata dari sumber seperti BPS (Badan Pusat Statistik) atau Kaggle. Latih kemampuan interpretasi hasil: angka statistik baru bermakna jika bisa dijelaskan dalam konteks yang tepat. Diskusikan temuan datamu dengan teman atau dosen untuk mendapatkan perspektif berbeda.
+</Tip>
+
+<Note>
+  **Perangkat Lunak untuk Analisis Statistika**
+
+  Dalam praktik, analisis statistika jarang dilakukan secara manual. Kuasai setidaknya satu alat analisis berikut:
+  - **Microsoft Excel / Google Sheets** — cocok untuk analisis deskriptif dasar dan visualisasi data sederhana.
+  - **R (dengan RStudio)** — bahasa pemrograman khusus statistika yang sangat powerful dan banyak digunakan dalam penelitian akademik.
+  - **Python (dengan library pandas, NumPy, SciPy, dan Matplotlib)** — fleksibel untuk analisis data skala besar dan integrasi dengan machine learning.
+  - **SPSS** — antarmuka grafis yang ramah pengguna, populer di bidang sosial dan psikologi.
+</Note>

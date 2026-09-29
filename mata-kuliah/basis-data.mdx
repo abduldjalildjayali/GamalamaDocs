@@ -1,0 +1,315 @@
+---
+title: "Basis Data: Desain, SQL, dan Manajemen Data Relasional"
+sidebarTitle: "Basis Data"
+description: "Pelajari konsep basis data relasional, perancangan ERD, normalisasi, serta perintah SQL untuk membuat, mengambil, dan memanipulasi data."
+---
+
+Basis data adalah komponen inti dari hampir semua sistem informasi modern — mulai dari aplikasi perbankan, e-commerce, hingga sistem akademik kampus. Tanpa manajemen data yang baik, informasi berharga bisa hilang, duplikat, atau sulit diakses. Mata kuliah ini mengajarkan Anda cara merancang basis data relasional yang baik, memahami hubungan antar entitas, menerapkan normalisasi untuk menghilangkan redundansi, serta menguasai SQL untuk mengolah data secara efisien.
+
+## Konsep Basis Data Relasional
+
+**Basis data relasional** (Relational Database) menyimpan data dalam bentuk **tabel** (relasi) yang terdiri dari baris (*record/tuple*) dan kolom (*field/atribut*). Hubungan antar tabel dibangun menggunakan **kunci** (*key*).
+
+<CardGroup cols={2}>
+  <Card title="Primary Key (PK)" icon="key">
+    Kolom atau kombinasi kolom yang secara unik mengidentifikasi setiap baris dalam tabel. Nilainya tidak boleh NULL dan tidak boleh duplikat. Contoh: `nim` pada tabel mahasiswa.
+  </Card>
+  <Card title="Foreign Key (FK)" icon="link">
+    Kolom dalam satu tabel yang merujuk ke Primary Key tabel lain, menciptakan relasi antar tabel. Contoh: `id_prodi` pada tabel mahasiswa yang merujuk ke tabel program_studi.
+  </Card>
+  <Card title="Tabel (Relasi)" icon="table">
+    Unit penyimpanan dasar dalam basis data relasional. Setiap tabel merepresentasikan satu entitas atau relasi antar entitas. Baris = satu data konkret; kolom = atribut entitas.
+  </Card>
+  <Card title="DBMS (Database Management System)" icon="server">
+    Perangkat lunak yang mengelola basis data, contoh: MySQL, PostgreSQL, Oracle, SQLite. DBMS menangani penyimpanan, keamanan, konkurensi, dan pemulihan data.
+  </Card>
+</CardGroup>
+
+---
+
+## Entity Relationship Diagram (ERD)
+
+**ERD** adalah diagram visual yang menggambarkan entitas dalam sistem, atribut-atributnya, dan hubungan (*relasi*) antar entitas sebelum basis data diimplementasikan. ERD merupakan langkah pertama dalam perancangan basis data.
+
+### Komponen Utama ERD
+
+| Simbol | Nama | Keterangan |
+|--------|------|------------|
+| Persegi panjang | Entitas | Objek atau konsep yang datanya perlu disimpan (misal: Mahasiswa, Dosen) |
+| Elips | Atribut | Properti yang dimiliki entitas (misal: nama, NIM, tanggal_lahir) |
+| Belah ketupat | Relasi | Hubungan antara dua atau lebih entitas (misal: "Mengambil", "Mengajar") |
+| Garis | Penghubung | Menghubungkan entitas dengan atribut atau relasi |
+
+### Jenis Kardinalitas Relasi
+
+<CardGroup cols={3}>
+  <Card title="One-to-One (1:1)" icon="arrow-right">
+    Satu entitas di sisi A berelasi dengan tepat satu entitas di sisi B. Contoh: satu mahasiswa memiliki satu kartu tanda mahasiswa.
+  </Card>
+  <Card title="One-to-Many (1:N)" icon="code-branch">
+    Satu entitas di sisi A berelasi dengan banyak entitas di sisi B. Contoh: satu dosen mengajar banyak mata kuliah.
+  </Card>
+  <Card title="Many-to-Many (M:N)" icon="shuffle">
+    Banyak entitas di sisi A berelasi dengan banyak entitas di sisi B. Contoh: banyak mahasiswa mengambil banyak mata kuliah. Direalisasikan dengan tabel perantara.
+  </Card>
+</CardGroup>
+
+---
+
+## Normalisasi
+
+**Normalisasi** adalah proses pengorganisasian tabel dalam basis data untuk mengurangi **redundansi data** (duplikasi) dan mencegah **anomali data** saat operasi insert, update, atau delete dilakukan.
+
+<Steps>
+  <Step title="Bentuk Normal Pertama (1NF)">
+    Syarat: setiap kolom hanya boleh berisi nilai **atomik** (tidak dapat dibagi lagi), dan tidak boleh ada kelompok kolom yang berulang.
+
+    **Pelanggaran 1NF (contoh buruk):**
+
+    | id_mhs | nama | mata_kuliah |
+    |--------|------|-------------|
+    | 001 | Andi | Algo, SD, BD |
+
+    **Setelah 1NF (setiap sel berisi satu nilai):**
+
+    | id_mhs | nama | mata_kuliah |
+    |--------|------|-------------|
+    | 001 | Andi | Algoritma |
+    | 001 | Andi | Struktur Data |
+    | 001 | Andi | Basis Data |
+  </Step>
+  <Step title="Bentuk Normal Kedua (2NF)">
+    Syarat: sudah memenuhi 1NF, dan setiap kolom non-kunci harus **sepenuhnya bergantung** pada seluruh primary key (bukan hanya sebagian). Masalah ini muncul ketika primary key bersifat komposit.
+
+    **Contoh:** Dalam tabel `nilai (id_mhs, id_mk, nama_mhs, nama_mk, nilai_angka)`, kolom `nama_mhs` hanya bergantung pada `id_mhs`, bukan pada kombinasi `(id_mhs, id_mk)`. Solusinya: pisahkan ke tabel `mahasiswa` dan `mata_kuliah` yang terpisah.
+  </Step>
+  <Step title="Bentuk Normal Ketiga (3NF)">
+    Syarat: sudah memenuhi 2NF, dan tidak ada kolom non-kunci yang bergantung pada kolom non-kunci lain (**tidak ada ketergantungan transitif**).
+
+    **Contoh:** Dalam tabel `mahasiswa (id_mhs, nama, id_prodi, nama_prodi)`, kolom `nama_prodi` bergantung pada `id_prodi`, bukan pada `id_mhs`. Solusinya: pindahkan `nama_prodi` ke tabel `program_studi` yang terpisah.
+  </Step>
+</Steps>
+
+<Note>
+  Dalam praktik industri, normalisasi hingga **3NF** sudah cukup untuk sebagian besar kasus. Normalisasi lebih tinggi (BCNF, 4NF, 5NF) digunakan pada skenario khusus dengan kompleksitas tinggi, namun kadang mengorbankan performa query karena membutuhkan lebih banyak operasi JOIN.
+</Note>
+
+---
+
+## Perintah SQL Dasar
+
+**SQL** (*Structured Query Language*) adalah bahasa standar untuk berkomunikasi dengan basis data relasional. SQL dibagi menjadi beberapa kategori: DDL (definisi struktur), DML (manipulasi data), dan DQL (query data).
+
+### Membuat Tabel (DDL — CREATE TABLE)
+
+```sql
+-- Membuat tabel program studi
+CREATE TABLE program_studi (
+    id_prodi    INT          PRIMARY KEY AUTO_INCREMENT,
+    kode_prodi  VARCHAR(10)  NOT NULL UNIQUE,
+    nama_prodi  VARCHAR(100) NOT NULL,
+    jenjang     ENUM('D3', 'S1', 'S2', 'S3') DEFAULT 'S1',
+    dibuat_pada TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Membuat tabel mahasiswa dengan foreign key
+CREATE TABLE mahasiswa (
+    nim         VARCHAR(15)  PRIMARY KEY,
+    nama        VARCHAR(100) NOT NULL,
+    email       VARCHAR(100) UNIQUE,
+    tanggal_lahir DATE,
+    jenis_kelamin ENUM('L', 'P'),
+    id_prodi    INT,
+    angkatan    YEAR,
+    CONSTRAINT fk_prodi
+        FOREIGN KEY (id_prodi) REFERENCES program_studi(id_prodi)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- Membuat tabel mata kuliah
+CREATE TABLE mata_kuliah (
+    id_mk       INT          PRIMARY KEY AUTO_INCREMENT,
+    kode_mk     VARCHAR(10)  NOT NULL UNIQUE,
+    nama_mk     VARCHAR(100) NOT NULL,
+    sks         TINYINT      NOT NULL CHECK (sks BETWEEN 1 AND 6),
+    semester    TINYINT      NOT NULL CHECK (semester BETWEEN 1 AND 8)
+);
+
+-- Tabel perantara untuk relasi M:N mahasiswa-mata_kuliah
+CREATE TABLE nilai (
+    nim         VARCHAR(15),
+    id_mk       INT,
+    nilai_angka DECIMAL(5,2),
+    nilai_huruf CHAR(2),
+    tahun_ajaran VARCHAR(10),
+    PRIMARY KEY (nim, id_mk, tahun_ajaran),
+    FOREIGN KEY (nim)   REFERENCES mahasiswa(nim),
+    FOREIGN KEY (id_mk) REFERENCES mata_kuliah(id_mk)
+);
+```
+
+### Memasukkan Data (DML — INSERT)
+
+```sql
+-- Memasukkan data program studi
+INSERT INTO program_studi (kode_prodi, nama_prodi, jenjang)
+VALUES
+    ('TI-S1', 'Teknik Informatika', 'S1'),
+    ('SI-S1', 'Sistem Informasi', 'S1'),
+    ('TK-S1', 'Teknik Komputer', 'S1');
+
+-- Memasukkan beberapa mahasiswa sekaligus
+INSERT INTO mahasiswa (nim, nama, email, tanggal_lahir, jenis_kelamin, id_prodi, angkatan)
+VALUES
+    ('22001', 'Andi Pratama',   'andi@mahasiswa.ac.id',  '2003-05-14', 'L', 1, 2022),
+    ('22002', 'Siti Rahayu',    'siti@mahasiswa.ac.id',  '2003-08-22', 'P', 1, 2022),
+    ('22003', 'Budi Santoso',   'budi@mahasiswa.ac.id',  '2002-12-01', 'L', 2, 2022),
+    ('21001', 'Dewi Anggraini', 'dewi@mahasiswa.ac.id',  '2002-03-17', 'P', 1, 2021);
+
+-- Memasukkan data nilai
+INSERT INTO nilai (nim, id_mk, nilai_angka, nilai_huruf, tahun_ajaran)
+VALUES
+    ('22001', 1, 88.50, 'A',  '2023/2024'),
+    ('22001', 2, 76.00, 'B',  '2023/2024'),
+    ('22002', 1, 92.00, 'A',  '2023/2024'),
+    ('22002', 2, 85.50, 'A',  '2023/2024');
+```
+
+### Mengambil Data (DQL — SELECT)
+
+```sql
+-- Mengambil semua data mahasiswa
+SELECT * FROM mahasiswa;
+
+-- Mengambil kolom tertentu dengan kondisi
+SELECT nim, nama, email, angkatan
+FROM mahasiswa
+WHERE angkatan = 2022
+ORDER BY nama ASC;
+
+-- Menggunakan fungsi agregat
+SELECT
+    angkatan,
+    COUNT(*)           AS jumlah_mahasiswa,
+    MIN(tanggal_lahir) AS termuda,
+    MAX(tanggal_lahir) AS tertua
+FROM mahasiswa
+GROUP BY angkatan
+ORDER BY angkatan DESC;
+
+-- Pencarian dengan LIKE (pola teks)
+SELECT nim, nama FROM mahasiswa
+WHERE nama LIKE '%Andi%';
+
+-- Membatasi jumlah hasil
+SELECT nim, nama FROM mahasiswa
+ORDER BY nama ASC
+LIMIT 10 OFFSET 0;
+```
+
+### Memperbarui Data (DML — UPDATE)
+
+```sql
+-- Memperbarui satu baris berdasarkan primary key
+UPDATE mahasiswa
+SET email = 'andi.pratama@mahasiswa.ac.id'
+WHERE nim = '22001';
+
+-- Memperbarui beberapa kolom sekaligus
+UPDATE nilai
+SET nilai_angka = 90.00,
+    nilai_huruf = 'A'
+WHERE nim = '22003'
+  AND id_mk = 1
+  AND tahun_ajaran = '2023/2024';
+```
+
+### Menghapus Data (DML — DELETE)
+
+```sql
+-- Menghapus baris tertentu (selalu gunakan WHERE!)
+DELETE FROM nilai
+WHERE nim = '22003'
+  AND tahun_ajaran = '2023/2024';
+
+-- Menghapus mahasiswa (pastikan tidak ada constraint FK yang aktif)
+DELETE FROM mahasiswa
+WHERE nim = '22003';
+```
+
+<Warning>
+  **PERHATIAN:** Selalu sertakan klausa `WHERE` saat menggunakan `UPDATE` dan `DELETE`. Menjalankan `DELETE FROM mahasiswa;` tanpa `WHERE` akan **menghapus seluruh data** dalam tabel secara permanen! Biasakan untuk selalu melakukan backup sebelum operasi massal.
+</Warning>
+
+---
+
+## JOIN dan Relasi Tabel
+
+**JOIN** digunakan untuk menggabungkan data dari dua tabel atau lebih berdasarkan kolom yang saling berhubungan (biasanya melalui Foreign Key).
+
+```sql
+-- INNER JOIN: hanya menampilkan baris yang cocok di kedua tabel
+SELECT
+    m.nim,
+    m.nama                  AS nama_mahasiswa,
+    p.nama_prodi,
+    p.jenjang
+FROM mahasiswa m
+INNER JOIN program_studi p ON m.id_prodi = p.id_prodi
+ORDER BY m.nama;
+
+-- LEFT JOIN: semua mahasiswa ditampilkan, meski belum punya program studi
+SELECT
+    m.nim,
+    m.nama                  AS nama_mahasiswa,
+    COALESCE(p.nama_prodi, 'Belum Terdaftar') AS nama_prodi
+FROM mahasiswa m
+LEFT JOIN program_studi p ON m.id_prodi = p.id_prodi;
+
+-- JOIN tiga tabel: mahasiswa, nilai, dan mata_kuliah
+SELECT
+    m.nim,
+    m.nama                  AS nama_mahasiswa,
+    mk.kode_mk,
+    mk.nama_mk,
+    mk.sks,
+    n.nilai_angka,
+    n.nilai_huruf,
+    n.tahun_ajaran
+FROM nilai n
+INNER JOIN mahasiswa  m  ON n.nim   = m.nim
+INNER JOIN mata_kuliah mk ON n.id_mk = mk.id_mk
+WHERE n.tahun_ajaran = '2023/2024'
+  AND n.nilai_angka >= 75
+ORDER BY m.nama, mk.kode_mk;
+
+-- Menghitung IPK per mahasiswa
+SELECT
+    m.nim,
+    m.nama,
+    ROUND(
+        SUM(n.nilai_angka * mk.sks) / SUM(mk.sks),
+        2
+    ) AS ipk
+FROM nilai n
+INNER JOIN mahasiswa   m  ON n.nim   = m.nim
+INNER JOIN mata_kuliah mk ON n.id_mk = mk.id_mk
+WHERE n.tahun_ajaran = '2023/2024'
+GROUP BY m.nim, m.nama
+ORDER BY ipk DESC;
+```
+
+### Jenis-Jenis JOIN
+
+| Jenis JOIN | Deskripsi |
+|-----------|-----------|
+| `INNER JOIN` | Hanya baris yang memiliki kecocokan di kedua tabel |
+| `LEFT JOIN` | Semua baris dari tabel kiri + baris cocok dari tabel kanan (NULL jika tidak ada) |
+| `RIGHT JOIN` | Semua baris dari tabel kanan + baris cocok dari tabel kiri (NULL jika tidak ada) |
+| `FULL OUTER JOIN` | Semua baris dari kedua tabel (NULL jika tidak ada pasangan) |
+| `CROSS JOIN` | Produk kartesian — setiap baris dari tabel kiri digabung dengan setiap baris tabel kanan |
+| `SELF JOIN` | Tabel di-JOIN dengan dirinya sendiri (misal: hierarki karyawan) |
+
+<Tip>
+  **Tips Belajar Basis Data:** Praktikkan perintah SQL secara langsung menggunakan database nyata. Anda bisa menginstal **MySQL** atau **PostgreSQL** secara lokal, atau gunakan layanan online gratis seperti [DB Fiddle](https://www.db-fiddle.com) dan [SQLiteOnline](https://sqliteonline.com). Mulailah dengan merancang ERD terlebih dahulu sebelum menulis satu perintah SQL pun — desain yang baik di awal menghemat banyak pekerjaan di kemudian hari!
+</Tip>

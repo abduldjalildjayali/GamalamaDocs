@@ -1,0 +1,379 @@
+---
+title: "Struktur Data: Array, Linked List, Stack, Queue, dan Tree"
+sidebarTitle: "Struktur Data"
+description: "Materi struktur data mencakup array, linked list, stack, queue, pohon biner, dan graf beserta implementasi dan kompleksitas waktunya."
+---
+
+Struktur data adalah cara terorganisir untuk menyimpan, mengelola, dan mengakses data dalam memori komputer agar dapat diproses secara efisien. Pemilihan struktur data yang tepat sangat berpengaruh terhadap performa program — algoritma yang sama bisa berjalan ratusan kali lebih cepat hanya dengan menggunakan struktur data yang sesuai. Mata kuliah ini membahas berbagai struktur data fundamental beserta implementasinya dalam Python.
+
+## Array dan List
+
+**Array** adalah struktur data yang menyimpan sekumpulan elemen bertipe sama dalam lokasi memori yang berurutan. Di Python, tipe data `list` berperan seperti array dinamis yang dapat menampung berbagai tipe data sekaligus.
+
+```python
+# Operasi dasar pada List Python
+mahasiswa = ["Andi", "Budi", "Citra", "Dewi", "Eka"]
+
+# Akses elemen berdasarkan indeks (dimulai dari 0)
+print(mahasiswa[0])      # Output: Andi
+print(mahasiswa[-1])     # Output: Eka (indeks negatif dari belakang)
+
+# Slicing: mengambil sebagian elemen
+print(mahasiswa[1:4])    # Output: ['Budi', 'Citra', 'Dewi']
+
+# Menambah elemen
+mahasiswa.append("Fajar")          # Tambah di akhir
+mahasiswa.insert(2, "Bagas")       # Sisipkan di indeks ke-2
+
+# Menghapus elemen
+mahasiswa.remove("Budi")           # Hapus berdasarkan nilai
+dihapus = mahasiswa.pop(0)         # Hapus berdasarkan indeks, kembalikan nilainya
+
+# Mencari dan menghitung
+print(mahasiswa.index("Citra"))    # Indeks dari "Citra"
+print(len(mahasiswa))              # Jumlah elemen
+
+# List comprehension: membuat list baru secara ringkas
+nilai = [75, 88, 62, 95, 70]
+lulus = [n for n in nilai if n >= 70]
+print(lulus)  # Output: [75, 88, 95, 70]
+```
+
+<Note>
+  Di Python, `list` bersifat **dinamis** — ukurannya dapat bertambah atau berkurang saat program berjalan. Berbeda dengan array statis di bahasa C/C++ yang ukurannya harus ditetapkan sejak awal.
+</Note>
+
+---
+
+## Stack
+
+**Stack** (tumpukan) adalah struktur data yang mengikuti prinsip **LIFO** (*Last In, First Out*) — elemen yang terakhir dimasukkan adalah yang pertama dikeluarkan. Bayangkan seperti tumpukan piring: piring yang ditaruh paling atas adalah yang pertama diambil.
+
+**Operasi utama Stack:**
+- **push** → Memasukkan elemen ke atas tumpukan
+- **pop** → Mengeluarkan elemen dari atas tumpukan
+- **peek / top** → Melihat elemen teratas tanpa menghapusnya
+- **is_empty** → Mengecek apakah stack kosong
+
+```python
+# Implementasi Stack menggunakan List Python
+class Stack:
+    def __init__(self):
+        self._data = []
+
+    def push(self, item):
+        """Memasukkan elemen ke atas stack."""
+        self._data.append(item)
+        print(f"  Push: {item}")
+
+    def pop(self):
+        """Mengeluarkan dan mengembalikan elemen teratas."""
+        if self.is_empty():
+            raise IndexError("Pop dari stack kosong!")
+        item = self._data.pop()
+        print(f"  Pop : {item}")
+        return item
+
+    def peek(self):
+        """Melihat elemen teratas tanpa menghapusnya."""
+        if self.is_empty():
+            return None
+        return self._data[-1]
+
+    def is_empty(self):
+        return len(self._data) == 0
+
+    def size(self):
+        return len(self._data)
+
+    def __str__(self):
+        return f"Stack (atas→bawah): {self._data[::-1]}"
+
+
+# Simulasi: undo/redo editor teks
+riwayat = Stack()
+print("=== Simulasi Riwayat Pengeditan ===")
+riwayat.push("Tulis paragraf 1")
+riwayat.push("Tambah judul")
+riwayat.push("Format teks tebal")
+print(riwayat)
+
+print("\nUndo terakhir:")
+riwayat.pop()
+print(riwayat)
+```
+
+<Accordion title="Kapan menggunakan Stack?">
+  Stack sangat berguna untuk:
+  - **Undo/Redo** pada aplikasi editor teks atau grafis
+  - **Navigasi browser** (tombol Back/Forward)
+  - **Evaluasi ekspresi matematika** (misal: konversi infix ke postfix)
+  - **Rekursi** — sistem secara internal menggunakan *call stack* untuk menyimpan state pemanggilan fungsi
+  - **Pengecekan keseimbangan kurung** `()`, `[]`, `{}`
+</Accordion>
+
+---
+
+## Queue
+
+**Queue** (antrian) adalah struktur data yang mengikuti prinsip **FIFO** (*First In, First Out*) — elemen yang pertama dimasukkan adalah yang pertama dikeluarkan. Persis seperti antrian di kasir: orang yang datang pertama akan dilayani pertama.
+
+**Operasi utama Queue:**
+- **enqueue** → Memasukkan elemen ke belakang antrian
+- **dequeue** → Mengeluarkan elemen dari depan antrian
+- **front** → Melihat elemen paling depan
+
+```python
+from collections import deque
+
+# Implementasi Queue menggunakan collections.deque (lebih efisien dari list)
+class Queue:
+    def __init__(self):
+        self._data = deque()
+
+    def enqueue(self, item):
+        """Menambahkan elemen ke belakang antrian."""
+        self._data.append(item)
+        print(f"  Enqueue: {item}")
+
+    def dequeue(self):
+        """Mengeluarkan elemen dari depan antrian."""
+        if self.is_empty():
+            raise IndexError("Dequeue dari antrian kosong!")
+        item = self._data.popleft()
+        print(f"  Dequeue: {item}")
+        return item
+
+    def front(self):
+        return self._data[0] if not self.is_empty() else None
+
+    def is_empty(self):
+        return len(self._data) == 0
+
+    def size(self):
+        return len(self._data)
+
+    def __str__(self):
+        return f"Queue (depan→belakang): {list(self._data)}"
+
+
+# Simulasi: antrian cetak dokumen
+printer_queue = Queue()
+print("=== Simulasi Antrian Printer ===")
+printer_queue.enqueue("Laporan_Andi.pdf")
+printer_queue.enqueue("Tugas_Budi.docx")
+printer_queue.enqueue("Presentasi_Citra.pptx")
+print(printer_queue)
+
+print("\nMemproses dokumen:")
+printer_queue.dequeue()
+printer_queue.dequeue()
+print(printer_queue)
+```
+
+<Note>
+  Gunakan `collections.deque` dari pustaka standar Python untuk implementasi queue yang efisien. Operasi `popleft()` pada `deque` berjalan dalam O(1), sedangkan `pop(0)` pada `list` biasa berjalan dalam O(n) karena semua elemen harus digeser.
+</Note>
+
+---
+
+## Linked List
+
+**Linked List** (daftar berantai) adalah struktur data linear di mana setiap elemen (disebut **node**) menyimpan dua hal: **data** dan **pointer** yang menunjuk ke node berikutnya. Berbeda dengan array, linked list tidak memerlukan lokasi memori yang berurutan.
+
+```python
+# Implementasi Singly Linked List
+class Node:
+    """Merepresentasikan satu node dalam linked list."""
+    def __init__(self, data):
+        self.data = data
+        self.next = None   # Pointer ke node berikutnya
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None   # Node pertama (kepala daftar)
+
+    def append(self, data):
+        """Menambah node baru di akhir list."""
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            return
+        current = self.head
+        while current.next is not None:
+            current = current.next
+        current.next = new_node
+
+    def prepend(self, data):
+        """Menambah node baru di awal list."""
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+
+    def delete(self, data):
+        """Menghapus node pertama yang memiliki nilai tertentu."""
+        if self.head is None:
+            return
+        if self.head.data == data:
+            self.head = self.head.next
+            return
+        current = self.head
+        while current.next is not None:
+            if current.next.data == data:
+                current.next = current.next.next
+                return
+            current = current.next
+
+    def display(self):
+        """Menampilkan seluruh isi linked list."""
+        elements = []
+        current = self.head
+        while current is not None:
+            elements.append(str(current.data))
+            current = current.next
+        print(" → ".join(elements) + " → NULL")
+
+
+# Penggunaan
+ll = LinkedList()
+ll.append(10)
+ll.append(20)
+ll.append(30)
+ll.prepend(5)
+print("Linked List:", end=" ")
+ll.display()   # 5 → 10 → 20 → 30 → NULL
+
+ll.delete(20)
+print("Setelah hapus 20:", end=" ")
+ll.display()   # 5 → 10 → 30 → NULL
+```
+
+<CardGroup cols={2}>
+  <Card title="Kelebihan Linked List" icon="circle-check">
+    - Penyisipan dan penghapusan di awal/tengah berjalan O(1) jika pointer sudah diketahui
+    - Ukuran bersifat dinamis, tidak perlu ditetapkan di awal
+    - Penggunaan memori sesuai kebutuhan aktual
+  </Card>
+  <Card title="Kekurangan Linked List" icon="circle-xmark">
+    - Akses elemen berdasarkan indeks berjalan O(n) — tidak bisa akses langsung
+    - Membutuhkan memori ekstra untuk menyimpan pointer setiap node
+    - Tidak cache-friendly karena node tersebar di memori
+  </Card>
+</CardGroup>
+
+---
+
+## Pohon Biner
+
+**Pohon Biner** (*Binary Tree*) adalah struktur data hierarkis di mana setiap node memiliki paling banyak **dua anak**: anak kiri dan anak kanan. Node paling atas disebut **root**, sedangkan node tanpa anak disebut **leaf** (daun).
+
+```python
+# Implementasi Binary Search Tree (BST)
+class TreeNode:
+    def __init__(self, nilai):
+        self.nilai = nilai
+        self.kiri = None    # Subtree kiri (nilai lebih kecil)
+        self.kanan = None   # Subtree kanan (nilai lebih besar)
+
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def sisipkan(self, nilai):
+        """Menyisipkan nilai baru ke dalam BST."""
+        if self.root is None:
+            self.root = TreeNode(nilai)
+        else:
+            self._sisipkan_rekursif(self.root, nilai)
+
+    def _sisipkan_rekursif(self, node, nilai):
+        if nilai < node.nilai:
+            if node.kiri is None:
+                node.kiri = TreeNode(nilai)
+            else:
+                self._sisipkan_rekursif(node.kiri, nilai)
+        else:
+            if node.kanan is None:
+                node.kanan = TreeNode(nilai)
+            else:
+                self._sisipkan_rekursif(node.kanan, nilai)
+
+    def cari(self, nilai) -> bool:
+        """Mencari apakah suatu nilai ada di dalam BST."""
+        return self._cari_rekursif(self.root, nilai)
+
+    def _cari_rekursif(self, node, nilai) -> bool:
+        if node is None:
+            return False
+        if nilai == node.nilai:
+            return True
+        elif nilai < node.nilai:
+            return self._cari_rekursif(node.kiri, nilai)
+        else:
+            return self._cari_rekursif(node.kanan, nilai)
+
+    def inorder(self, node, hasil=None):
+        """Traversal In-Order: kiri → akar → kanan (menghasilkan urutan terurut)."""
+        if hasil is None:
+            hasil = []
+        if node:
+            self.inorder(node.kiri, hasil)
+            hasil.append(node.nilai)
+            self.inorder(node.kanan, hasil)
+        return hasil
+
+
+# Penggunaan
+bst = BinarySearchTree()
+for angka in [50, 30, 70, 20, 40, 60, 80]:
+    bst.sisipkan(angka)
+
+print("Traversal In-Order:", bst.inorder(bst.root))  # Terurut naik
+print("Cari 40:", bst.cari(40))   # True
+print("Cari 55:", bst.cari(55))   # False
+```
+
+<Accordion title="Jenis-Jenis Traversal Pohon Biner">
+  | Jenis Traversal | Urutan Kunjungan | Kegunaan |
+  |-----------------|-----------------|----------|
+  | **In-Order** | Kiri → Akar → Kanan | Menghasilkan elemen terurut pada BST |
+  | **Pre-Order** | Akar → Kiri → Kanan | Menyalin struktur pohon |
+  | **Post-Order** | Kiri → Kanan → Akar | Menghapus pohon, evaluasi ekspresi |
+  | **Level-Order** | Per-level (BFS) | Mencari jalur terpendek |
+</Accordion>
+
+---
+
+## Kompleksitas Waktu
+
+Kompleksitas waktu (*time complexity*) mengukur seberapa cepat suatu algoritma berjalan seiring bertambahnya ukuran input. Notasi **Big-O** digunakan untuk menyatakan batas atas pertumbuhan waktu eksekusi.
+
+| Notasi Big-O | Nama | Contoh Operasi |
+|-------------|------|----------------|
+| O(1) | Konstan | Akses elemen array berdasarkan indeks |
+| O(log n) | Logaritmik | Binary search, operasi BST seimbang |
+| O(n) | Linear | Pencarian linear, traversal linked list |
+| O(n log n) | Linear-logaritmik | Merge sort, quick sort rata-rata |
+| O(n²) | Kuadratik | Bubble sort, insertion sort, nested loop |
+| O(2ⁿ) | Eksponensial | Fibonacci rekursif naif, subset generation |
+| O(n!) | Faktorial | Permutasi, brute-force Traveling Salesman |
+
+### Perbandingan Kompleksitas Operasi Struktur Data
+
+| Struktur Data | Akses | Pencarian | Penyisipan | Penghapusan |
+|---------------|-------|-----------|-----------|-------------|
+| Array / List | O(1) | O(n) | O(n) | O(n) |
+| Stack | O(n) | O(n) | O(1) | O(1) |
+| Queue | O(n) | O(n) | O(1) | O(1) |
+| Linked List | O(n) | O(n) | O(1)* | O(1)* |
+| Binary Search Tree | O(log n)† | O(log n)† | O(log n)† | O(log n)† |
+| Hash Table | O(1) | O(1) | O(1) | O(1) |
+
+*\*Jika pointer ke node sudah diketahui*  
+*†Rata-rata pada BST seimbang; O(n) pada kasus terburuk (pohon miring)*
+
+<Tip>
+  **Tips Belajar Struktur Data:** Jangan hanya menghafalkan kompleksitas — pahami **mengapa** suatu operasi memiliki kompleksitas tertentu. Cobalah gambar ilustrasi manual (misalnya node linked list atau level pohon) sebelum menulis kode. Visualisasi membantu pemahaman jauh lebih efektif daripada membaca saja. Gunakan situs [VisuAlgo](https://visualgo.net/id) untuk animasi interaktif berbagai struktur data.
+</Tip>

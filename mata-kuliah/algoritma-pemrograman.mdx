@@ -1,0 +1,258 @@
+---
+title: "Algoritma & Pemrograman: Dasar Logika dan Kode Program"
+sidebarTitle: "Algoritma & Pemrograman"
+description: "Pelajari dasar-dasar algoritma dan pemrograman: pseudocode, flowchart, tipe data, percabangan, perulangan, dan fungsi menggunakan bahasa Python."
+---
+
+Algoritma dan pemrograman adalah fondasi utama dalam ilmu komputer. Sebelum menulis satu baris kode pun, seorang programmer harus mampu merancang langkah-langkah logis untuk memecahkan masalah. Mata kuliah ini membekali Anda dengan kemampuan berpikir komputasional, mulai dari menyusun algoritma sederhana hingga mengimplementasikannya dalam bahasa Python secara terstruktur dan efisien.
+
+## Apa itu Algoritma?
+
+Algoritma adalah sekumpulan langkah-langkah instruksi yang terdefinisi dengan jelas, logis, dan terbatas untuk menyelesaikan suatu permasalahan tertentu. Dalam dunia pemrograman, algoritma menjadi "cetak biru" sebelum kode ditulis.
+
+### Ciri-Ciri Algoritma yang Baik
+
+<CardGroup cols={2}>
+  <Card title="Finiteness (Terbatas)" icon="flag-checkered">
+    Algoritma harus berhenti setelah sejumlah langkah yang terbatas. Tidak boleh berjalan selamanya tanpa akhir.
+  </Card>
+  <Card title="Definiteness (Jelas)" icon="bullseye">
+    Setiap langkah harus dirumuskan secara tepat dan tidak ambigu sehingga tidak menimbulkan penafsiran ganda.
+  </Card>
+  <Card title="Input & Output" icon="arrow-right-arrow-left">
+    Algoritma menerima nol atau lebih input dan menghasilkan setidaknya satu output yang bermakna.
+  </Card>
+  <Card title="Effectiveness (Efektif)" icon="bolt">
+    Setiap langkah harus cukup sederhana sehingga dapat dilaksanakan dalam waktu terbatas dengan sumber daya yang wajar.
+  </Card>
+</CardGroup>
+
+---
+
+## Pseudocode dan Flowchart
+
+Sebelum menulis program sungguhan, programmer biasanya merancang solusi menggunakan **pseudocode** atau **flowchart** untuk memperjelas alur logika.
+
+<CardGroup cols={2}>
+  <Card title="Pseudocode" icon="file-lines">
+    Pseudocode adalah representasi informal dari algoritma menggunakan bahasa sehari-hari yang menyerupai kode program. Tidak terikat pada sintaks bahasa tertentu, sehingga mudah dibaca oleh siapa pun.
+
+    **Contoh pseudocode mencari nilai maksimum:**
+    ```
+    MULAI
+      Baca nilai A dan B
+      JIKA A > B MAKA
+        maks ← A
+      JIKA TIDAK
+        maks ← B
+      Tampilkan maks
+    SELESAI
+    ```
+  </Card>
+  <Card title="Flowchart" icon="diagram-project">
+    Flowchart adalah diagram alir yang merepresentasikan algoritma secara visual menggunakan simbol-simbol standar.
+
+    **Simbol umum flowchart:**
+    - **Oval** → Mulai / Selesai
+    - **Persegi panjang** → Proses / Instruksi
+    - **Jajar genjang** → Input / Output
+    - **Belah ketupat** → Keputusan (kondisi)
+    - **Panah** → Arah aliran
+  </Card>
+</CardGroup>
+
+---
+
+## Tipe Data Dasar
+
+Tipe data menentukan jenis nilai yang dapat disimpan dalam sebuah variabel. Python memiliki beberapa tipe data dasar yang wajib dipahami.
+
+| Tipe Data | Keterangan | Contoh Nilai |
+|-----------|------------|--------------|
+| `int` | Bilangan bulat | `10`, `-3`, `0` |
+| `float` | Bilangan desimal | `3.14`, `-0.5` |
+| `str` | Teks / string | `"Halo"`, `'Python'` |
+| `bool` | Nilai benar/salah | `True`, `False` |
+| `list` | Kumpulan data berurutan | `[1, 2, 3]` |
+| `dict` | Pasangan kunci-nilai | `{"nama": "Andi"}` |
+
+```python
+# Contoh deklarasi dan penggunaan tipe data di Python
+nama = "Siti Rahayu"        # str
+usia = 20                    # int
+ipk = 3.75                   # float
+lulus = True                 # bool
+mata_kuliah = ["Algo", "SD", "BD"]  # list
+profil = {"nama": nama, "usia": usia}  # dict
+
+print(f"Nama   : {nama}")
+print(f"Usia   : {usia} tahun")
+print(f"IPK    : {ipk}")
+print(f"Lulus  : {lulus}")
+print(f"Profil : {profil}")
+```
+
+<Note>
+  Python adalah bahasa yang **dinamis** — Anda tidak perlu mendeklarasikan tipe data secara eksplisit. Python akan menentukannya secara otomatis berdasarkan nilai yang diberikan.
+</Note>
+
+---
+
+## Percabangan
+
+Percabangan memungkinkan program mengambil keputusan dan menjalankan blok kode yang berbeda berdasarkan kondisi tertentu. Python menggunakan kata kunci `if`, `elif`, dan `else`.
+
+```python
+# Menentukan kategori nilai mahasiswa
+nilai = 78
+
+if nilai >= 85:
+    grade = "A"
+    keterangan = "Sangat Memuaskan"
+elif nilai >= 75:
+    grade = "B"
+    keterangan = "Memuaskan"
+elif nilai >= 60:
+    grade = "C"
+    keterangan = "Cukup"
+elif nilai >= 50:
+    grade = "D"
+    keterangan = "Kurang"
+else:
+    grade = "E"
+    keterangan = "Tidak Lulus"
+
+print(f"Nilai  : {nilai}")
+print(f"Grade  : {grade}")
+print(f"Status : {keterangan}")
+```
+
+<Accordion title="Bagaimana cara kerja elif?">
+  `elif` (singkatan dari *else if*) memungkinkan pengecekan kondisi tambahan jika kondisi sebelumnya bernilai `False`. Python akan memeriksa kondisi secara berurutan dari atas ke bawah, dan hanya menjalankan blok pertama yang kondisinya `True`. Setelah satu blok dieksekusi, blok `elif` dan `else` berikutnya akan dilewati.
+</Accordion>
+
+---
+
+## Perulangan
+
+Perulangan (*loop*) digunakan untuk mengeksekusi blok kode secara berulang. Python menyediakan dua jenis perulangan utama: `for` dan `while`.
+
+### Perulangan `for`
+
+Digunakan ketika jumlah iterasi sudah diketahui atau kita ingin mengiterasi elemen dalam suatu koleksi.
+
+```python
+# Mencetak daftar mata kuliah dengan nomor urut
+mata_kuliah = ["Algoritma", "Struktur Data", "Basis Data", "Jaringan Komputer"]
+
+print("Daftar Mata Kuliah Semester Ini:")
+for i, mk in enumerate(mata_kuliah, start=1):
+    print(f"  {i}. {mk}")
+
+# Menghitung jumlah nilai
+nilai_ujian = [85, 72, 90, 68, 78]
+total = 0
+for nilai in nilai_ujian:
+    total += nilai
+
+rata_rata = total / len(nilai_ujian)
+print(f"\nRata-rata nilai: {rata_rata:.2f}")
+```
+
+### Perulangan `while`
+
+Digunakan ketika perulangan harus terus berjalan selama suatu kondisi terpenuhi, dan jumlah iterasi belum tentu diketahui.
+
+```python
+# Simulasi input PIN dengan batas percobaan
+pin_benar = "1234"
+maks_percobaan = 3
+percobaan = 0
+
+while percobaan < maks_percobaan:
+    pin_input = input("Masukkan PIN Anda: ")
+    percobaan += 1
+
+    if pin_input == pin_benar:
+        print("✅ PIN benar! Akses diberikan.")
+        break
+    else:
+        sisa = maks_percobaan - percobaan
+        if sisa > 0:
+            print(f"❌ PIN salah. Sisa percobaan: {sisa}")
+        else:
+            print("🔒 Akun Anda terkunci. Terlalu banyak percobaan gagal.")
+```
+
+<Warning>
+  Hati-hati dengan **infinite loop** pada perulangan `while`! Pastikan kondisi perulangan pada akhirnya akan bernilai `False`, atau gunakan `break` untuk keluar dari loop. Infinite loop dapat menyebabkan program Anda berhenti merespons.
+</Warning>
+
+---
+
+## Fungsi
+
+Fungsi adalah blok kode yang dapat digunakan kembali (*reusable*) untuk menjalankan tugas tertentu. Penggunaan fungsi membuat kode lebih terorganisir, mudah dibaca, dan menghindari pengulangan kode yang tidak perlu (*DRY — Don't Repeat Yourself*).
+
+```python
+# Mendefinisikan dan memanggil fungsi
+def hitung_luas_segitiga(alas: float, tinggi: float) -> float:
+    """
+    Menghitung luas segitiga.
+    
+    Args:
+        alas  : Panjang alas segitiga
+        tinggi: Tinggi segitiga
+    
+    Returns:
+        Luas segitiga (float)
+    """
+    luas = 0.5 * alas * tinggi
+    return luas
+
+
+def kategori_bmi(berat_kg: float, tinggi_m: float) -> str:
+    """Menentukan kategori BMI seseorang."""
+    bmi = berat_kg / (tinggi_m ** 2)
+
+    if bmi < 18.5:
+        return f"BMI {bmi:.1f} — Berat Badan Kurang"
+    elif bmi < 25.0:
+        return f"BMI {bmi:.1f} — Berat Badan Normal"
+    elif bmi < 30.0:
+        return f"BMI {bmi:.1f} — Kelebihan Berat Badan"
+    else:
+        return f"BMI {bmi:.1f} — Obesitas"
+
+
+# Memanggil fungsi
+luas = hitung_luas_segitiga(alas=10, tinggi=6)
+print(f"Luas segitiga: {luas} cm²")
+
+hasil_bmi = kategori_bmi(berat_kg=65, tinggi_m=1.70)
+print(hasil_bmi)
+```
+
+<Steps>
+  <Step title="Definisikan Fungsi">
+    Gunakan kata kunci `def` diikuti nama fungsi dan parameter di dalam kurung. Nama fungsi sebaiknya mencerminkan tugasnya (gunakan kata kerja).
+  </Step>
+  <Step title="Tulis Docstring">
+    Tambahkan docstring (komentar dalam tanda `"""`) di baris pertama fungsi untuk menjelaskan apa yang dilakukan fungsi tersebut, parameter yang diterima, dan nilai yang dikembalikan.
+  </Step>
+  <Step title="Isi Badan Fungsi">
+    Tulis logika program di dalam fungsi. Gunakan indentasi konsisten (4 spasi) untuk menandai blok kode milik fungsi tersebut.
+  </Step>
+  <Step title="Kembalikan Nilai">
+    Gunakan `return` untuk mengembalikan hasil komputasi. Fungsi tanpa `return` akan mengembalikan `None` secara implisit.
+  </Step>
+  <Step title="Panggil Fungsi">
+    Panggil fungsi dengan menyebutkan namanya beserta argumen yang diperlukan. Hasil kembalian dapat disimpan ke variabel untuk digunakan kemudian.
+  </Step>
+</Steps>
+
+---
+
+<Tip>
+  **Tips Belajar Efektif:** Konsep algoritma dan pemrograman hanya bisa dikuasai melalui latihan yang konsisten. Cobalah menyelesaikan minimal satu soal pemrograman setiap hari di platform seperti [HackerRank](https://www.hackerrank.com) atau [LeetCode](https://leetcode.com). Jangan takut membuat kesalahan — *error* adalah bagian normal dari proses belajar pemrograman!
+</Tip>

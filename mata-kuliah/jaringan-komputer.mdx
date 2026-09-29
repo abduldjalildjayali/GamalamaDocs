@@ -1,0 +1,227 @@
+---
+title: "Jaringan Komputer: Protokol, Model OSI, dan Komunikasi Data"
+sidebarTitle: "Jaringan Komputer"
+description: "Materi jaringan komputer mencakup model OSI, protokol TCP/IP, pengalamatan IP, subnetting, perangkat jaringan, dan keamanan jaringan dasar."
+---
+
+Jaringan komputer adalah infrastruktur yang memungkinkan perangkat-perangkat digital saling terhubung dan bertukar data — dari dua komputer di ruangan yang sama hingga miliaran perangkat di seluruh dunia melalui internet. Memahami cara kerja jaringan adalah bekal esensial bagi setiap profesional teknologi informasi, baik untuk membangun aplikasi berbasis jaringan, mengelola infrastruktur IT, maupun memastikan keamanan sistem. Mata kuliah ini membahas konsep fundamental jaringan komputer dari model referensi OSI, protokol komunikasi, pengalamatan IP, hingga keamanan jaringan dasar.
+
+## Model OSI
+
+**Model OSI** (*Open Systems Interconnection*) adalah kerangka konseptual yang membagi proses komunikasi jaringan menjadi **7 lapisan** (*layer*). Setiap lapisan memiliki tanggung jawab yang jelas dan berkomunikasi hanya dengan lapisan di atas dan di bawahnya. Model ini dikembangkan oleh ISO sebagai standar universal untuk interoperabilitas antar sistem.
+
+| No. | Nama Layer | Fungsi Utama | Protokol / Teknologi Contoh |
+|-----|-----------|-------------|----------------------------|
+| 7 | **Application** | Antarmuka langsung dengan pengguna dan aplikasi | HTTP, HTTPS, FTP, SMTP, DNS, SSH |
+| 6 | **Presentation** | Enkoding, enkripsi/dekripsi, kompresi data | SSL/TLS, JPEG, MPEG, ASCII, Unicode |
+| 5 | **Session** | Membuka, menjaga, dan menutup sesi komunikasi | NetBIOS, RPC, PPTP |
+| 4 | **Transport** | Pengiriman data end-to-end, kontrol aliran, pengecekan error | TCP, UDP |
+| 3 | **Network** | Pengalamatan logis (IP) dan routing antar jaringan | IP, ICMP, ARP, OSPF, BGP |
+| 2 | **Data Link** | Pengalamatan fisik (MAC), deteksi error pada link | Ethernet, Wi-Fi (802.11), PPP |
+| 1 | **Physical** | Transmisi bit melalui media fisik | Kabel tembaga, serat optik, gelombang radio |
+
+<Note>
+  Cara mudah mengingat 7 lapisan OSI dari atas ke bawah: **"All People Seem To Need Data Processing"** (Application, Presentation, Session, Transport, Network, Data Link, Physical). Atau dari bawah ke atas: **"Please Do Not Throw Sausage Pizza Away"**.
+</Note>
+
+### Bagaimana Data Bergerak Melalui Model OSI
+
+<Steps>
+  <Step title="Enkapsulasi (Pengirim)">
+    Saat data dikirim, setiap layer menambahkan **header** (dan terkadang trailer) berisi informasi kontrol yang relevan. Proses ini disebut **enkapsulasi**. Data berubah bentuk: dari pesan → segmen → paket → frame → bit.
+  </Step>
+  <Step title="Transmisi Fisik">
+    Di layer Physical, data telah menjadi rangkaian bit (sinyal listrik, cahaya, atau gelombang radio) yang ditransmisikan melalui media fisik menuju tujuan.
+  </Step>
+  <Step title="Dekapsulasi (Penerima)">
+    Di sisi penerima, setiap layer membaca dan melepas header yang ditambahkan oleh layer yang bersesuaian di pengirim (**dekapsulasi**), hingga data asli berhasil diekstrak di layer Application.
+  </Step>
+</Steps>
+
+---
+
+## Protokol TCP/IP
+
+**TCP/IP** adalah suite protokol standar yang menjadi fondasi internet modern. Berbeda dengan OSI yang bersifat konseptual (7 layer), TCP/IP memiliki **4 layer** yang bersifat implementatif.
+
+<CardGroup cols={2}>
+  <Card title="TCP (Transmission Control Protocol)" icon="shield-check">
+    **Connection-oriented** — TCP membangun koneksi terlebih dahulu melalui proses *three-way handshake* (SYN → SYN-ACK → ACK) sebelum data dikirim. Menjamin data sampai dengan urutan yang benar dan meminta pengiriman ulang jika ada paket yang hilang. Cocok untuk: web browsing, email, transfer file.
+  </Card>
+  <Card title="UDP (User Datagram Protocol)" icon="bolt">
+    **Connectionless** — UDP langsung mengirim data tanpa membangun koneksi. Lebih cepat namun tidak menjamin keandalan atau urutan pengiriman. Cocok untuk: video streaming, VoIP, game online, DNS query.
+  </Card>
+</CardGroup>
+
+### Perbandingan TCP vs UDP
+
+| Fitur | TCP | UDP |
+|-------|-----|-----|
+| Koneksi | Connection-oriented | Connectionless |
+| Keandalan | Terjamin (ACK, retransmit) | Tidak terjamin |
+| Urutan Data | Terjaga | Tidak terjaga |
+| Kecepatan | Lebih lambat | Lebih cepat |
+| Overhead | Lebih besar (header 20 byte+) | Lebih kecil (header 8 byte) |
+| Penggunaan | HTTP, FTP, SMTP, SSH | DNS, VoIP, streaming, game |
+
+### Lapisan dalam Model TCP/IP
+
+| Layer TCP/IP | Setara Layer OSI | Fungsi |
+|-------------|-----------------|--------|
+| **Application** | Layer 5, 6, 7 | Protokol aplikasi (HTTP, FTP, DNS, SMTP) |
+| **Transport** | Layer 4 | TCP & UDP — pengiriman end-to-end |
+| **Internet** | Layer 3 | IP — pengalamatan dan routing |
+| **Network Access** | Layer 1 & 2 | Transmisi fisik dan data link |
+
+---
+
+## Pengalamatan IP dan Subnetting
+
+**Alamat IP** (*Internet Protocol address*) adalah identitas unik yang diberikan kepada setiap perangkat dalam jaringan. Terdapat dua versi yang digunakan saat ini: IPv4 dan IPv6.
+
+### IPv4
+
+Alamat IPv4 terdiri dari **32 bit** yang dibagi menjadi 4 oktet, ditulis dalam format desimal bertitik. Contoh: `192.168.1.100`
+
+| Kelas | Rentang Oktet Pertama | Contoh Jaringan | Jumlah Host |
+|-------|-----------------------|-----------------|-------------|
+| A | 1 – 126 | `10.0.0.0/8` | ~16,7 juta |
+| B | 128 – 191 | `172.16.0.0/16` | ~65.536 |
+| C | 192 – 223 | `192.168.1.0/24` | 254 |
+
+**Alamat IP Privat** (tidak dapat dirutekan di internet publik):
+
+| Rentang | Kelas | Penggunaan Umum |
+|---------|-------|-----------------|
+| `10.0.0.0` – `10.255.255.255` | A | Jaringan korporat besar |
+| `172.16.0.0` – `172.31.255.255` | B | Jaringan menengah |
+| `192.168.0.0` – `192.168.255.255` | C | Jaringan rumah / kantor kecil |
+
+### Subnetting
+
+**Subnetting** adalah proses membagi satu jaringan besar menjadi beberapa jaringan yang lebih kecil (*subnet*) untuk efisiensi penggunaan alamat IP dan peningkatan keamanan.
+
+**Komponen subnetting:**
+- **Subnet Mask** → Menentukan bagian mana dari alamat IP yang merupakan network ID dan host ID
+- **Network Address** → Alamat pertama subnet (tidak dapat diberikan ke host)
+- **Broadcast Address** → Alamat terakhir subnet (tidak dapat diberikan ke host)
+- **Host yang dapat digunakan** → Total host − 2
+
+**Contoh perhitungan subnet:**
+
+| Prefix | Subnet Mask | Jumlah Host Tersedia | Contoh Penggunaan |
+|--------|------------|---------------------|-------------------|
+| /24 | 255.255.255.0 | 254 | Jaringan kantor kecil |
+| /25 | 255.255.255.128 | 126 | Dua departemen terpisah |
+| /26 | 255.255.255.192 | 62 | Lab komputer |
+| /27 | 255.255.255.224 | 30 | Ruang server kecil |
+| /30 | 255.255.255.252 | 2 | Koneksi point-to-point |
+
+### IPv6
+
+IPv6 menggunakan alamat **128 bit** yang ditulis dalam notasi heksadesimal dengan tanda titik dua. Contoh: `2001:0db8:85a3:0000:0000:8a2e:0370:7334`. IPv6 hadir sebagai solusi atas keterbatasan ruang alamat IPv4 yang hampir habis, dengan kapasitas total sekitar **340 undecillion** alamat.
+
+---
+
+## Perangkat Jaringan
+
+Setiap perangkat jaringan beroperasi pada layer OSI yang berbeda dan memiliki fungsi yang spesifik dalam membangun infrastruktur jaringan.
+
+<CardGroup cols={3}>
+  <Card title="Hub" icon="circle-nodes">
+    **Layer 1 (Physical)**
+
+    Perangkat paling sederhana yang menyiarkan (*broadcast*) data ke **semua port** tanpa memperhatikan tujuan. Tidak efisien karena menimbulkan banyak tabrakan data (*collision*). Saat ini sudah jarang digunakan, digantikan oleh switch.
+  </Card>
+  <Card title="Switch" icon="network-wired">
+    **Layer 2 (Data Link)**
+
+    Mengirimkan data hanya ke **port yang spesifik** berdasarkan tabel MAC address. Lebih efisien dan aman dari hub karena tidak mem-broadcast ke semua port. Switch layer 3 juga dapat melakukan routing.
+  </Card>
+  <Card title="Router" icon="router">
+    **Layer 3 (Network)**
+
+    Menghubungkan **jaringan yang berbeda** dan menentukan jalur terbaik (*routing*) bagi paket data berdasarkan alamat IP tujuan. Komponen utama yang menghubungkan jaringan lokal ke internet.
+  </Card>
+</CardGroup>
+
+<CardGroup cols={3}>
+  <Card title="Access Point (AP)" icon="wifi">
+    **Layer 2 (Data Link)**
+
+    Menyediakan akses jaringan nirkabel (*wireless*) bagi perangkat yang mendukung Wi-Fi. AP terhubung ke switch atau router melalui kabel dan memancarkan sinyal SSID.
+  </Card>
+  <Card title="Firewall" icon="fire">
+    **Layer 3–7**
+
+    Memantau dan memfilter lalu lintas jaringan masuk dan keluar berdasarkan aturan keamanan yang telah ditetapkan. Dapat berbentuk perangkat keras (*hardware*) maupun perangkat lunak (*software*).
+  </Card>
+  <Card title="Modem" icon="signal">
+    **Layer 1 (Physical)**
+
+    Mengkonversi sinyal digital dari komputer menjadi sinyal analog yang dapat dikirim melalui saluran telepon atau kabel koaksial, dan sebaliknya. Nama modem berasal dari *Modulator-Demodulator*.
+  </Card>
+</CardGroup>
+
+---
+
+## Keamanan Jaringan Dasar
+
+Keamanan jaringan bertujuan melindungi integritas, kerahasiaan, dan ketersediaan data yang dikirim melalui jaringan dari ancaman yang tidak sah.
+
+### Ancaman Umum Jaringan
+
+<Accordion title="Man-in-the-Middle (MitM) Attack">
+  Penyerang menyusup ke tengah komunikasi antara dua pihak tanpa sepengetahuan mereka, memungkinkan penyadapan atau manipulasi data. Contoh: ARP spoofing di jaringan lokal.
+
+  **Pencegahan:** Gunakan enkripsi end-to-end (HTTPS/TLS), verifikasi sertifikat digital, dan protokol seperti DNSSEC.
+</Accordion>
+
+<Accordion title="Denial of Service (DoS) / DDoS Attack">
+  Penyerang membanjiri server atau jaringan dengan traffic palsu dalam jumlah sangat besar sehingga layanan tidak dapat diakses oleh pengguna sah. DDoS (*Distributed* DoS) menggunakan banyak sumber secara bersamaan.
+
+  **Pencegahan:** Firewall dengan rate limiting, CDN dengan proteksi DDoS, sistem deteksi anomali traffic.
+</Accordion>
+
+<Accordion title="Packet Sniffing">
+  Penyerang menggunakan *packet analyzer* (sniffer) untuk menangkap dan membaca paket data yang melintas di jaringan, terutama di jaringan yang tidak terenkripsi.
+
+  **Pencegahan:** Enkripsi seluruh komunikasi (HTTPS, SSH, VPN), hindari menggunakan protokol teks biasa seperti HTTP, FTP, atau Telnet di jaringan publik.
+</Accordion>
+
+<Accordion title="Port Scanning">
+  Teknik yang digunakan penyerang untuk memetakan port mana yang terbuka pada suatu host, guna mengidentifikasi layanan yang berjalan dan mencari potensi kerentanan.
+
+  **Pencegahan:** Tutup port yang tidak digunakan, gunakan firewall untuk memfilter port, aktifkan *intrusion detection system* (IDS).
+</Accordion>
+
+### Mekanisme Keamanan Jaringan
+
+| Mekanisme | Fungsi | Contoh Teknologi |
+|-----------|--------|-----------------|
+| **Enkripsi** | Mengamankan data agar tidak dapat dibaca pihak tidak sah | TLS/SSL, AES, RSA |
+| **Firewall** | Memfilter traffic berdasarkan aturan keamanan | iptables, pfSense, Cisco ASA |
+| **VPN** | Membuat tunnel terenkripsi melalui jaringan publik | OpenVPN, WireGuard, IPsec |
+| **IDS/IPS** | Mendeteksi dan mencegah aktivitas mencurigakan | Snort, Suricata, Zeek |
+| **Autentikasi** | Memverifikasi identitas pengguna sebelum memberi akses | 802.1X, RADIUS, MFA |
+| **DMZ** | Zona buffer antara jaringan publik dan privat | Konfigurasi firewall berlapis |
+
+### Prinsip CIA Triad dalam Keamanan Jaringan
+
+<CardGroup cols={3}>
+  <Card title="Confidentiality (Kerahasiaan)" icon="lock">
+    Data hanya dapat diakses oleh pihak yang berwenang. Dicapai melalui enkripsi, kontrol akses, dan autentikasi yang kuat.
+  </Card>
+  <Card title="Integrity (Integritas)" icon="shield-halved">
+    Data tidak diubah tanpa izin selama penyimpanan maupun transmisi. Dijaga dengan hash (SHA-256), tanda tangan digital, dan checksum.
+  </Card>
+  <Card title="Availability (Ketersediaan)" icon="circle-check">
+    Layanan dan data dapat diakses kapan pun dibutuhkan oleh pengguna yang sah. Dipastikan melalui redundansi, backup, dan perlindungan terhadap DDoS.
+  </Card>
+</CardGroup>
+
+---
+
+<Tip>
+  **Tips Belajar Jaringan Komputer:** Teori jaringan akan jauh lebih mudah dipahami jika dipraktikkan langsung. Gunakan **Cisco Packet Tracer** (gratis untuk pelajar) atau **GNS3** untuk mensimulasikan topologi jaringan lengkap dengan router, switch, dan PC virtual. Untuk melihat paket data secara nyata, coba gunakan **Wireshark** untuk menganalisis traffic jaringan di komputer Anda sendiri. Praktik langsung akan mengubah konsep abstrak menjadi pemahaman yang konkret dan bertahan lama!
+</Tip>
