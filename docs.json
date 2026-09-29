@@ -1,17 +1,21 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Portal Materi Kuliah",
   "theme": "mint",
+  "name": "Portal Materi Kuliah",
   "colors": {
     "primary": "#10b981",
     "light": "#e6f4ea",
-    "dark": "#064e3b",
-    "background": {
-      "light": "#ffffff",
-      "dark": "#0f172a"
-    },
-  "modeToggle": {
-    "default": "light"
+    "dark": "#064e3b"
+  },
+  "favicon": "/favicon.svg",
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Mulai Belajar",
+      "href": "/introduction"
+    }
+  },
+  "footer": {
+    "socials": {}
   },
   "fonts": {
     "family": "Inter"
@@ -19,7 +23,6 @@
   "icons": {
     "library": "lucide"
   },
-  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
@@ -93,15 +96,5 @@
         ]
       }
     ]
-  },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Mulai Belajar",
-      "href": "/introduction"
-    }
-  },
-  "footer": {
-    "socials": {}
   }
 }
