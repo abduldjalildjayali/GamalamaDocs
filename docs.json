@@ -10,6 +10,9 @@
       "light": "#ffffff",
       "dark": "#0f172a"
     },
+  "modeToggle": {
+    "default": "light"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
